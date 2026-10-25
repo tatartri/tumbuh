@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bergabung ke TUMBUH 🌱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #E8F5EE 0%, #F3F8EE 50%, #EDF5E8 100%);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 8px 40px rgba(71,123,98,0.12);
+      max-width: 480px;
+      width: 100%;
+      padding: 40px 36px;
+      text-align: center;
+    }
+
+    .logo { font-size: 3.5rem; margin-bottom: 8px; }
+
+    h1 {
+      font-family: 'Fredoka', cursive;
+      font-size: 2rem;
+      color: #477B62;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: #7A9E8C;
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+    }
+
+    .qr-wrapper {
+      background: #F3F8EE;
+      border: 3px solid #DCEFE0;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 28px;
+      display: inline-block;
+    }
+
+    .qr-wrapper img {
+      width: 200px;
+      height: 200px;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .qr-label {
+      font-size: 0.8rem;
+      color: #7A9E8C;
+      margin-top: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .url-box {
+      background: #F3F8EE;
+      border: 2px solid #DCEFE0;
+      border-radius: 14px;
+      padding: 14px 20px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .url-text {
+      font-family: 'Fredoka', cursive;
+      font-size: 1.15rem;
+      color: #477B62;
+      font-weight: 600;
+      flex: 1;
+      word-break: break-all;
+      text-align: left;
+    }
+
+    .copy-btn {
+      background: #477B62;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .copy-btn:hover { background: #386350; }
+    .copy-btn.copied { background: #5BAD82; }
+
+    .steps {
+      text-align: left;
+      background: #F8FBF7;
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 24px;
+    }
+
+    .steps h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #477B62;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .step-num {
+      background: #477B62;
+      color: #fff;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 0.88rem;
+      color: #4A5568;
+      line-height: 1.5;
+    }
+
+    .step-text strong { color: #477B62; }
+
+    .creds {
+      background: #FFFBEA;
+      border: 2px solid #FCEFC4;
+      border-radius: 14px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+
+    .creds h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #A07B2D;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cred-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #FCEFC4;
+    }
+    .cred-row:last-child { border-bottom: none; }
+
+    .cred-label { font-size: 0.8rem; color: #A07B2D; font-weight: 600; }
+    .cred-val {
+      font-family: 'Fredoka', cursive;
+      font-size: 0.95rem;
+      color: #7A5C1E;
+      font-weight: 600;
+    }
+
+    .open-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, #477B62, #5BAD82);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 15px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: 'Fredoka', cursive;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 15px rgba(71,123,98,0.3);
+    }
+    .open-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(71,123,98,0.4);
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 0.78rem;
+      color: #9DB8A8;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 28px 20px; }
+      h1 { font-size: 1.6rem; }
+      .qr-wrapper img { width: 160px; height: 160px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">🌱</div>
+    <h1>Bergabung ke TUMBUH!</h1>
+    <p class="subtitle">Scan QR atau ketik link di bawah ini di HP kamu</p>
+
+    <div class="qr-wrapper">
+      <img id="qr-img" src="/qr_tumbuh.png" alt="QR Code TUMBUH" onerror="this.style.display='none'; document.getElementById('qr-fallback').style.display='block'" />
+      <div id="qr-fallback" style="display:none; width:200px; height:200px; background:#DCEFE0; border-radius:8px; display:none; align-items:center; justify-content:center; font-size:0.8rem; color:#477B62; text-align:center; padding:20px;">
+        Scan QR tidak tersedia.<br>Ketik URL di bawah ini.
+      </div>
+      <div class="qr-label">📷 SCAN PAKAI KAMERA HP</div>
+    </div>
+
+    <div class="url-box">
+      <span class="url-text" id="app-url">Memuat...</span>
+      <button class="copy-btn" id="copy-btn" onclick="copyUrl()">Salin</button>
+    </div>
+
+    <div class="steps">
+      <h3>📋 Cara Bergabung</h3>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Pastikan HP kamu terhubung ke <strong>WiFi yang sama</strong> dengan laptop ini</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Scan QR code di atas atau ketik link di browser HP kamu</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Klik tombol <strong>"Masuk / Daftar"</strong> di aplikasi, lalu gunakan akun di bawah ini atau daftar akun baru</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text">Mulai belajar dan rawat kebunmu! 🌿</div>
+      </div>
+    </div>
+
+    <div class="creds">
+      <h3>🔑 Akun Demo (Langsung Pakai)</h3>
+      <div class="cred-row">
+        <span class="cred-label">Email Anak:</span>
+        <span class="cred-val">anak@tumbuh.id</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-label">Kata Sandi:</span>
+        <span class="cred-val">Tumbuh123!</span>
+      </div>
+      <div style="margin-top:8px; font-size:0.78rem; color:#A07B2D;">
+        💡 Atau daftar akun baru pakai emailmu sendiri!
+      </div>
+    </div>
+
+    <a id="open-link" href="#" class="open-btn">🌱 Buka TUMBUH Sekarang</a>
+
+    <p class="note">⚠️ Link ini hanya bekerja selama laptop pemilik menyala dan terhubung ke WiFi yang sama.</p>
+  </div>
+
+  <script>
+    // Deteksi URL secara otomatis dari browser
+    const host = window.location.host; // misal: 192.168.1.36:3000
+    const appUrl = `http://${host}/`;
+
+    document.getElementById('app-url').textContent = appUrl;
+    document.getElementById('open-link').href = appUrl;
+
+    // Update QR code dengan URL yang sesuai
+    const qrImg = document.getElementById('qr-img');
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(appUrl)}`;
+
+    function copyUrl() {
+      navigator.clipboard.writeText(appUrl).then(() => {
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '✅ Disalin!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Salin';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        // Fallback
+        const input = document.createElement('input');
+        input.value = appUrl;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        const btn = document.getElementById('copy-btn');
+        btn.textContent = '✅ Disalin!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Salin'; btn.classList.remove('copied'); }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

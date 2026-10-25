@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUMBUH - Area Administrator</title>
+  <meta name="description" content="Dashboard Administrator TUMBUH untuk mengelola pengguna, sesi fokus, refleksi, dan materi edukasi.">
+  
+  <!-- Font Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- File CSS Admin -->
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <!-- Container Dashboard Admin -->
+  <div class="admin-app" id="admin-app">
+    
+    <!-- Header Admin -->
+    <header class="admin-header">
+      <div class="admin-brand">
+        <a href="/" class="brand-link" title="Kembali ke Beranda Aplikasi">
+          <span class="brand-logo-icon">🌱</span>
+          <div class="brand-text">
+            <h1 class="brand-name">TUMBUH</h1>
+            <span class="brand-sub">Portal Administrator</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="admin-header-actions" id="admin-auth-actions">
+        <div class="admin-user-pill" id="admin-user-pill">
+          <span class="admin-avatar" id="admin-user-avatar">🌟</span>
+          <div class="admin-user-details">
+            <strong id="admin-user-name">Memeriksa Sesi...</strong>
+            <span class="role-badge">Admin Resmi</span>
+          </div>
+        </div>
+
+        <a href="/" class="btn-goto-app" title="Buka Halaman Pengguna">🌱 Buka Aplikasi Anak</a>
+        <button class="btn-admin-logout" id="btn-admin-logout" title="Keluar dari Admin">🚪 Keluar</button>
+      </div>
+    </header>
+
+    <!-- Konten Utama Admin -->
+    <main class="admin-main" id="admin-main-view">
+      
+      <!-- Baris Sambutan & Refresh Realtime -->
+      <div class="admin-topbar">
+        <div>
+          <h2 class="admin-heading">Dashboard Analisis & Manajemen</h2>
+          <p class="admin-subheading">Data agregat langsung tersinkronisasi dari database MySQL <code>tumbuh_db</code>.</p>
+        </div>
+        <button class="btn-refresh-data" id="btn-refresh-stats">
+          <span class="refresh-icon">🔄</span> Segarkan Data
+        </button>
+      </div>
+
+      <!-- 1. KARTU METRIK NYATA DARI MYSQL -->
+      <section class="admin-stats-grid">
+        <div class="stat-box box-users">
+          <div class="stat-icon">👥</div>
+          <div class="stat-meta">
+            <span class="stat-num" id="stat-total-users">0</span>
+            <span class="stat-title">Total Pengguna Terdaftar</span>
+            <span class="stat-footnote" id="stat-active-users">0 akun aktif</span>
+          </div>
+        </div>
+
+        <div class="stat-box box-sessions">
+          <div class="stat-icon">🎯</div>
+          <div class="stat-meta">
+            <span class="stat-num" id="stat-completed-sessions">0</span>
+            <span class="stat-title">Sesi Fokus Selesai</span>
+            <span class="stat-footnote" id="stat-running-sessions">0 sesi aktif sekarang</span>
+          </div>
+        </div>
+
+        <div class="stat-box box-time">
+          <div class="stat-icon">⌛</div>
+          <div class="stat-meta">
+            <span class="stat-num" id="stat-total-minutes">0</span>
+            <span class="stat-title">Total Menit Belajar</span>
+            <span class="stat-footnote">Waktu fokus terverifikasi</span>
+          </div>
+        </div>
+
+        <div class="stat-box box-reflections">
+          <div class="stat-icon">📝</div>
+          <div class="stat-meta">
+            <span class="stat-num" id="stat-total-reflections">0</span>
+            <span class="stat-title">Jurnal Refleksi</span>
+            <span class="stat-footnote">Catatan evaluasi anak</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab Navigasi Admin -->
+      <nav class="admin-nav-tabs">
+        <button class="tab-btn active" data-tab="tab-users">👥 Manajemen Pengguna</button>
+        <button class="tab-btn" data-tab="tab-sessions">⏱️ Log Sesi Fokus</button>
+        <button class="tab-btn" data-tab="tab-reflections">📋 Pemantauan Refleksi</button>
+        <button class="tab-btn" data-tab="tab-contents">📚 Konten Edukasi & Tips</button>
+      </nav>
+
+      <!-- TAB 1: MANAJEMEN PENGGUNA -->
+      <section class="tab-content active" id="tab-users">
+        <div class="content-card">
+          <div class="card-header-row">
+            <div>
+              <h3 class="card-title">Daftar Pengguna Terdaftar</h3>
+              <p class="card-sub">Data akun, progres kebun, dan status akses pengguna.</p>
+            </div>
+            <input type="text" id="user-search-input" class="search-input" placeholder="🔍 Cari nama atau email...">
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="users-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Pengguna</th>
+                  <th>Email</th>
+                  <th>Peran</th>
+                  <th>Total Sesi</th>
+                  <th>Level Kebun</th>
+                  <th>Status Akun</th>
+                  <th>Terdaftar</th>
+                  <th>Tindakan</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body">
+                <tr><td colspan="9" class="loading-td">Memuat data pengguna dari MySQL...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: LOG SESI FOKUS -->
+      <section class="tab-content" id="tab-sessions">
+        <div class="content-card">
+          <div class="card-header-row">
+            <div>
+              <h3 class="card-title">Log Sesi Fokus Real-time</h3>
+              <p class="card-sub">Pencatatan sesi timer yang terverifikasi dan diaudit oleh server.</p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="sessions-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Anak</th>
+                  <th>Target Belajar</th>
+                  <th>Durasi Target</th>
+                  <th>Waktu Mulai</th>
+                  <th>Waktu Selesai</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="sessions-table-body">
+                <tr><td colspan="7" class="loading-td">Memuat data sesi fokus...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: PEMANTAUAN REFLEKSI -->
+      <section class="tab-content" id="tab-reflections">
+        <div class="content-card">
+          <div class="card-header-row">
+            <div>
+              <h3 class="card-title">Jurnal Refleksi & Analisis Gangguan</h3>
+              <p class="card-sub">Melihat kendala belajar dan perasaan anak untuk bimbingan lebih baik.</p>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table" id="reflections-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Anak</th>
+                  <th>Target Belajar</th>
+                  <th>Perasaan</th>
+                  <th>Gangguan Fokus</th>
+                  <th>Ide / Strategi Baru</th>
+                  <th>Waktu Catat</th>
+                </tr>
+              </thead>
+              <tbody id="reflections-table-body">
+                <tr><td colspan="7" class="loading-td">Memuat jurnal refleksi...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: KONTEN EDUKASI & TIPS -->
+      <section class="tab-content" id="tab-contents">
+        <div class="contents-grid-layout">
+          <!-- Form Tambah Konten -->
+          <div class="content-card">
+            <h3 class="card-title">Tambah Konten Baru</h3>
+            <p class="card-sub">Tambahkan tips fokus, panduan, atau kutipan untuk ditampilkan kepada anak.</p>
+            <form id="form-add-content" class="admin-form">
+              <div class="form-group">
+                <label for="content-title" class="form-label">Judul Konten:</label>
+                <input type="text" id="content-title" class="form-input" placeholder="Misal: Trik Minum Air Putih Sebelum Belajar" required>
+              </div>
+              <div class="form-row">
+                <div class="form-group flex-1">
+                  <label for="content-type" class="form-label">Tipe Konten:</label>
+                  <select id="content-type" class="form-select">
+                    <option value="tip">Tips Belajar Ceria</option>
+                    <option value="guide">Panduan Penggunaan</option>
+                    <option value="quote">Kutipan Sahabat Pohon</option>
+                    <option value="announcement">Pengumuman</option>
+                  </select>
+                </div>
+                <div class="form-group flex-1">
+                  <label for="content-status" class="form-label">Status Publikasi:</label>
+                  <select id="content-status" class="form-select">
+                    <option value="published">Publikasikan (Published)</option>
+                    <option value="draft">Draf (Draft)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="content-body" class="form-label">Isi Pesan / Konten:</label>
+                <textarea id="content-body" class="form-textarea" rows="4" placeholder="Tuliskan petunjuk atau motivasi ramah anak di sini..." required></textarea>
+              </div>
+              <button type="submit" class="btn-primary-admin" id="btn-save-content">Simpan Konten ke MySQL</button>
+            </form>
+          </div>
+
+          <!-- Daftar Konten -->
+          <div class="content-card">
+            <h3 class="card-title">Daftar Konten Aktif</h3>
+            <p class="card-sub">Konten yang tersimpan di tabel <code>learning_contents</code>.</p>
+            <div class="contents-list-wrap" id="contents-list-container">
+              <p class="loading-text">Memuat konten edukasi...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL LOGIN KHUSUS ADMIN (Tampil jika belum login sebagai admin) -->
+  <div class="admin-modal-overlay hidden" id="admin-login-modal">
+    <div class="admin-login-box">
+      <div class="login-header">
+        <span class="login-badge-icon">🔐</span>
+        <h3 class="login-title">Autentikasi Administrator</h3>
+        <p class="login-sub">Masuk dengan kredensial admin yang terdaftar di database MySQL.</p>
+      </div>
+
+      <div class="login-demo-hint">
+        <strong>Akun Bawaan MySQL:</strong><br>
+        Email: <code>admin@tumbuh.id</code> | Sandi: <code>Admin123!</code>
+      </div>
+
+      <form id="form-admin-login" class="admin-form">
+        <div class="form-group">
+          <label for="admin-login-email" class="form-label">Email Administrator:</label>
+          <input type="email" id="admin-login-email" class="form-input" placeholder="admin@tumbuh.id" required>
+        </div>
+        <div class="form-group">
+          <label for="admin-login-password" class="form-label">Kata Sandi:</label>
+          <input type="password" id="admin-login-password" class="form-input" placeholder="••••••••" required>
+        </div>
+        <div class="form-error-alert hidden" id="admin-login-error"></div>
+        <button type="submit" class="btn-primary-admin w-100" id="btn-submit-login">Masuk ke Portal Admin</button>
+      </form>
+      <div class="login-footer">
+        <a href="/" class="login-back-link">← Kembali ke Halaman Anak</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifikasi Admin -->
+  <div class="admin-toast" id="admin-toast">
+    <span id="toast-text">Notifikasi</span>
+  </div>
+
+  <!-- Script Admin -->
+  <script src="admin.js"></script>
+</body>
+</html>

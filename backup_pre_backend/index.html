@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUMBUH - Belajar & Fokus Seru untuk Anak</title>
+  <meta name="description" content="TUMBUH adalah aplikasi belajar dan fokus ramah anak dengan metode timer berkebun, jurnal refleksi, jeda aktif, dan kebun pertumbuhan.">
+  
+  <!-- Font Google: Plus Jakarta Sans & Fredoka untuk kesan ramah anak dan modern -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- File CSS Utama -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Canvas untuk Efek Konfeti saat sesi selesai -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="app-container">
+    <!-- ==============================================
+         SIDEBAR NAVIGASI (Tampil di Desktop & Tablet)
+         ============================================== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">
+          <div class="logo-icon">
+            <!-- Ikon Tanaman Lucu SVG -->
+            <svg viewBox="0 0 40 40" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="20" r="19" fill="#DCEFE0" stroke="#477B62" stroke-width="2"/>
+              <path d="M20 28V16" stroke="#477B62" stroke-width="3" stroke-linecap="round"/>
+              <path d="M20 18C15 14 12 18 12 18C12 18 16 23 20 21" fill="#69A27F" stroke="#477B62" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M20 16C25 12 28 16 28 16C28 16 24 21 20 19" fill="#A8DCB5" stroke="#477B62" stroke-width="2" stroke-linejoin="round"/>
+              <circle cx="20" cy="12" r="3.5" fill="#FBD38D" stroke="#D69E2E" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-title">TUMBUH</h1>
+            <span class="brand-tagline">Belajar & Fokus Ceria</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profil Singkat Anak -->
+      <div class="user-pill-card" id="user-pill-btn" title="Klik untuk ubah nama">
+        <div class="user-avatar" id="sidebar-avatar">🌱</div>
+        <div class="user-info">
+          <span class="user-greeting">Halo, Kawan!</span>
+          <strong class="user-name" id="sidebar-user-name">Pembelajar Cilik</strong>
+        </div>
+        <button class="edit-profile-btn" aria-label="Ubah nama" id="btn-open-profile-modal">✏️</button>
+      </div>
+
+      <!-- Menu Navigasi 7 Halaman -->
+      <nav class="sidebar-nav">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <button class="nav-btn active" data-page="beranda" id="nav-beranda">
+              <span class="nav-icon">🏡</span>
+              <span class="nav-label">Beranda</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-btn" data-page="panduan" id="nav-panduan">
+              <span class="nav-icon">📖</span>
+              <span class="nav-label">Panduan</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-btn" data-page="fokus" id="nav-fokus">
+              <span class="nav-icon">⏱️</span>
+              <span class="nav-label">Fokus</span>
+              <span class="timer-badge-running hidden" id="timer-indicator-badge">●</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-btn" data-page="kebun" id="nav-kebun">
+              <span class="nav-icon">🪴</span>
+              <span class="nav-label">Kebun Pertumbuhan</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-btn" data-page="refleksi" id="nav-refleksi">
+              <span class="nav-icon">📝</span>
+              <span class="nav-label">Refleksi</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-btn" data-page="jeda" id="nav-jeda">
+              <span class="nav-icon">🧘‍♂️</span>
+              <span class="nav-label">Jeda Aktif</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-btn" data-page="evaluasi" id="nav-evaluasi">
+              <span class="nav-icon">📊</span>
+              <span class="nav-label">Evaluasi</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Kartu Pemutar Musik Belajar di Sidebar -->
+      <div class="sidebar-music-card" id="sidebar-music-box">
+        <div class="music-card-header">
+          <div class="music-icon-title">
+            <span class="music-note-icon">🎵</span>
+            <span class="music-title-text">Musik Belajar</span>
+          </div>
+          <div class="music-equalizer" id="sidebar-equalizer">
+            <span class="eq-bar bar-1"></span>
+            <span class="eq-bar bar-2"></span>
+            <span class="eq-bar bar-3"></span>
+            <span class="eq-bar bar-4"></span>
+          </div>
+        </div>
+        <div class="music-track-name" id="music-current-track-label">Kotak Musik Ajaib</div>
+        <div class="music-controls-row">
+          <button class="music-play-btn" id="btn-toggle-music" title="Putar/Jeda Musik">
+            <span id="music-play-icon">▶️</span>
+          </button>
+          <div class="music-volume-wrap">
+            <span class="vol-icon">🔉</span>
+            <input type="range" id="music-volume-slider" min="0" max="100" value="60" class="volume-slider" title="Atur Volume Musik">
+            <span class="vol-icon">🔊</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Sidebar: Level Tanaman & Kontrol Suara -->
+      <div class="sidebar-footer">
+        <div class="sidebar-level-card">
+          <div class="level-badge-header">
+            <span class="level-sub">Level Kebun</span>
+            <span class="level-num" id="sidebar-level-tag">Level 1</span>
+          </div>
+          <div class="level-progress-bar">
+            <div class="level-progress-fill" id="sidebar-level-progress" style="width: 20%;"></div>
+          </div>
+          <span class="level-hint" id="sidebar-level-hint">1 sesi lagi untuk tunas baru!</span>
+        </div>
+        
+        <div class="sidebar-actions">
+          <button class="icon-toggle-btn" id="sound-toggle-btn" title="Aktif/Nonaktifkan Efek Suara">
+            <span id="sound-icon">🔔</span> <span class="action-btn-text">Efek Suara: Nyala</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==============================================
+         KONTEN UTAMA (AREA HALAMAN)
+         ============================================== -->
+    <main class="main-content" id="main-content">
+
+      <!-- Header Khusus Tampilan HP / Mobile Topbar -->
+      <header class="mobile-topbar">
+        <div class="mobile-brand">
+          <span class="mobile-logo">🌱</span>
+          <span class="mobile-brand-name">TUMBUH</span>
+        </div>
+        <div class="mobile-right">
+          <button class="mobile-music-btn" id="btn-mobile-music" title="Putar Musik Belajar">
+            <span id="mobile-music-icon">🎵</span>
+          </button>
+          <span class="mobile-level-pill" id="mobile-level-pill">Lv. 1</span>
+          <button class="mobile-profile-btn" id="mobile-profile-btn">
+            <span id="mobile-avatar">🌱</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Floating Mini Timer Indicator (Muncul saat timer jalan di halaman lain) -->
+      <div class="floating-timer-banner hidden" id="floating-timer-bar">
+        <div class="floating-timer-info">
+          <span class="timer-dot-pulse"></span>
+          <span class="floating-timer-text">Sesi Belajar Aktif:</span>
+          <strong id="floating-timer-countdown">15:00</strong>
+        </div>
+        <button class="floating-timer-action" id="btn-goto-timer">Lihat Timer ⏱️</button>
+      </div>
+
+      <!-- =========================================================
+           1. HALAMAN BERANDA
+           ========================================================= -->
+      <section class="page-view active" id="page-beranda">
+        <div class="page-header">
+          <div class="greeting-box">
+            <span class="greeting-subtitle">Selamat Datang di Kebun Belajarmu! 🌻</span>
+            <h2 class="page-title greeting-title" id="home-greeting-text">Halo, Pembelajar Hebat!</h2>
+            <p class="page-desc">Setiap kali kamu fokus belajar, benih tanamanmu akan disiram dan bertumbuh jadi pohon yang kuat!</p>
+          </div>
+        </div>
+
+        <!-- Kartu Metrik Cepat -->
+        <div class="stats-grid">
+          <div class="stat-card card-sessions">
+            <div class="stat-icon-wrapper">🎯</div>
+            <div class="stat-content">
+              <span class="stat-number" id="home-stat-sessions">0</span>
+              <span class="stat-label">Sesi Fokus Selesai</span>
+            </div>
+            <span class="stat-badge">Keren!</span>
+          </div>
+
+          <div class="stat-card card-time">
+            <div class="stat-icon-wrapper">⏳</div>
+            <div class="stat-content">
+              <span class="stat-number" id="home-stat-minutes">0</span>
+              <span class="stat-label">Total Menit Belajar</span>
+            </div>
+            <span class="stat-badge">Fokus Juara</span>
+          </div>
+
+          <div class="stat-card card-plant">
+            <div class="stat-icon-wrapper">🌱</div>
+            <div class="stat-content">
+              <span class="stat-number" id="home-stat-level">Level 1</span>
+              <span class="stat-label" id="home-stat-plant-name">Benih Tidur</span>
+            </div>
+            <span class="stat-badge">Tumbuh Terus</span>
+          </div>
+
+          <div class="stat-card card-reflection">
+            <div class="stat-icon-wrapper">⭐</div>
+            <div class="stat-content">
+              <span class="stat-number" id="home-stat-reflections">0</span>
+              <span class="stat-label">Jurnal Refleksi</span>
+            </div>
+            <span class="stat-badge">Anak Bijak</span>
+          </div>
+        </div>
+
+        <!-- Hero Card Interaktif: Tanaman Hari Ini & Aksi Cepat -->
+        <div class="home-hero-grid">
+          <div class="hero-plant-showcase">
+            <div class="hero-plant-badge" id="home-hero-badge">🌿 Fase Pertumbuhan</div>
+            <div class="hero-plant-stage" id="home-plant-stage-visual">
+              <!-- Visual SVG Tanaman Dinamis -->
+              <div class="plant-visual-container" id="home-svg-container">
+                <!-- SVG akan diisi secara dinamis oleh JS -->
+              </div>
+            </div>
+            <div class="hero-plant-details">
+              <h3 class="hero-plant-title" id="home-hero-plant-title">Benih Lucu yang Nyenyak</h3>
+              <p class="hero-plant-desc" id="home-hero-plant-desc">Benihmu sedang beristirahat di tanah yang subur. Selesaikan 1 sesi fokus untuk membangunkannya jadi tunas hijau!</p>
+              <div class="hero-progress-box">
+                <div class="hero-progress-labels">
+                  <span>Progres ke Level Berikutnya</span>
+                  <span id="home-hero-progress-text">0 / 2 Sesi</span>
+                </div>
+                <div class="hero-progress-bar">
+                  <div class="hero-progress-fill" id="home-hero-progress-fill" style="width: 10%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kartu Menu Cepat -->
+          <div class="home-quick-actions">
+            <h3 class="section-subheading">Mau Melakukan Apa Hari Ini?</h3>
+            <div class="quick-btn-grid">
+              <button class="quick-action-card bg-fokus" data-goto="fokus">
+                <div class="quick-icon">⏱️</div>
+                <div class="quick-text">
+                  <strong>Mulai Sesi Fokus</strong>
+                  <span>Pilih 15 atau 25 menit belajar tanpa distraksi</span>
+                </div>
+                <span class="quick-arrow">➜</span>
+              </button>
+
+              <button class="quick-action-card bg-kebun" data-goto="kebun">
+                <div class="quick-icon">🪴</div>
+                <div class="quick-text">
+                  <strong>Jenguk Kebun</strong>
+                  <span>Lihat koleksi tanaman & lencana belajarmu</span>
+                </div>
+                <span class="quick-arrow">➜</span>
+              </button>
+
+              <button class="quick-action-card bg-jeda" data-goto="jeda">
+                <div class="quick-icon">🧘‍♀️</div>
+                <div class="quick-text">
+                  <strong>Jeda Aktif & Napas</strong>
+                  <span>Peregangan ceria & rilekskan matamu sebentar</span>
+                </div>
+                <span class="quick-arrow">➜</span>
+              </button>
+
+              <button class="quick-action-card bg-panduan" data-goto="panduan">
+                <div class="quick-icon">💡</div>
+                <div class="quick-text">
+                  <strong>Tips Belajar Ceria</strong>
+                  <span>Baca trik mudah agar fokus lebih lama</span>
+                </div>
+                <span class="quick-arrow">➜</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kutipan Inspiratif Ramah Anak -->
+        <div class="kid-quote-card">
+          <div class="quote-emoji">🌞</div>
+          <div class="quote-body">
+            <strong class="quote-title">Pesan Pohon Sahabat:</strong>
+            <p class="quote-text">"Pohon besar yang rindang dulunya hanyalah sebuah benih kecil yang tidak pernah menyerah untuk tumbuh. Kamu hebat hari ini!"</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           2. HALAMAN PANDUAN
+           ========================================================= -->
+      <section class="page-view" id="page-panduan">
+        <div class="page-header">
+          <div class="header-icon-pill">📖 Petunjuk & Rahasia Fokus</div>
+          <h2 class="page-title">Panduan Belajar Ceria</h2>
+          <p class="page-desc">Yuk pelajari cara menggunakan TUMBUH dan rahasia jitu supaya belajar terasa menyenangkan seperti bermain game!</p>
+        </div>
+
+        <!-- 4 Langkah Penggunaan Website -->
+        <div class="guide-steps-section">
+          <h3 class="section-subheading">Cara Bermain & Belajar di TUMBUH</h3>
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-badge">Langkah 1</div>
+              <div class="step-illustration">🎯</div>
+              <h4 class="step-title">Tentukan Targetmu</h4>
+              <p class="step-desc">Masuk ke menu <strong>Fokus</strong> dan tuliskan apa yang ingin kamu selesaikan (misal: "Mengerjakan PR Matematika 3 soal").</p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-badge">Langkah 2</div>
+              <div class="step-illustration">⏱️</div>
+              <h4 class="step-title">Mulai Timer & Fokus</h4>
+              <p class="step-desc">Pilih 15 menit jika baru mulai, atau 25 menit jika sudah siap. Singkirkan mainan atau HP sementara waktu!</p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-badge">Langkah 3</div>
+              <div class="step-illustration">🪴</div>
+              <h4 class="step-title">Rawat Kebun Pertumbuhan</h4>
+              <p class="step-desc">Begitu timer selesai dan berbunyi, benihmu otomatis disiram! Semakin banyak sesi, tanamanmu makin besar.</p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-badge">Langkah 4</div>
+              <div class="step-illustration">📝</div>
+              <h4 class="step-title">Isi Refleksi & Istirahat</h4>
+              <p class="step-desc">Tulis perasaanmu di menu <strong>Refleksi</strong>, lalu lakukan peregangan seru di menu <strong>Jeda Aktif</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips Belajar Ramah Anak -->
+        <div class="tips-section">
+          <h3 class="section-subheading">5 Trik Ajaib Anak Juara Fokus ⭐</h3>
+          <div class="tips-accordion">
+            <div class="tip-card">
+              <div class="tip-icon">🪑</div>
+              <div class="tip-content">
+                <h4 class="tip-title">1. Meja Bersih, Pikiran Bersih</h4>
+                <p class="tip-text">Siapkan hanya buku, pensil, dan alat yang kamu butuhkan sekarang. Simpan mainan, komik, atau cemilan berlebih agar matamu tidak teralihkan.</p>
+              </div>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">💧</div>
+              <div class="tip-content">
+                <h4 class="tip-title">2. Teguk Air Putih Sebelum Mulai</h4>
+                <p class="tip-text">Otak kita butuh air agar bisa berpikir cerdas dan cepat! Sediakan segelas air di dekat mejamu.</p>
+              </div>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">🍅</div>
+              <div class="tip-content">
+                <h4 class="tip-title">3. Metode Pomodoro Ramah Anak</h4>
+                <p class="tip-text">Belajar fokus selama 15-25 menit, lalu istirahat 5 menit. Jangan belajar berjam-jam tanpa jeda karena otakmu bisa kecapekan!</p>
+              </div>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">🧘‍♂️</div>
+              <div class="tip-content">
+                <h4 class="tip-title">4. Jurus Mengusir Lamunan (Trik 3 Detik)</h4>
+                <p class="tip-text">Kalau tiba-tiba melamun atau bosan, tarik napas dalam 3 kali, hembuskan perlahan, lalu bisikkan: <em>"Aku bisa fokus sebentar lagi!"</em></p>
+              </div>
+            </div>
+
+            <div class="tip-card">
+              <div class="tip-icon">🏆</div>
+              <div class="tip-content">
+                <h4 class="tip-title">5. Rayakan Setiap Keberhasilan Kecil</h4>
+                <p class="tip-text">Bahkan membaca 2 halaman buku adalah kemajuan hebat. Berikan tos pada dirimu sendiri atau peluk orang tuamu!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           3. HALAMAN FOKUS
+           ========================================================= -->
+      <section class="page-view" id="page-fokus">
+        <div class="page-header text-center">
+          <div class="header-icon-pill">⏱️ Ruang Belajar Hening</div>
+          <h2 class="page-title">Waktunya Fokus & Tumbuh</h2>
+          <p class="page-desc">Tentukan misi belajarmu, pasang timermu, dan mari siram tanamanmu sampai mekar!</p>
+        </div>
+
+        <div class="fokus-container">
+          <!-- Input Target Belajar -->
+          <div class="target-card">
+            <label for="fokus-target-input" class="target-label">
+              <span class="target-icon">🎯</span>
+              <span>Apa target belajarmu di sesi ini?</span>
+            </label>
+            <div class="target-input-row">
+              <input type="text" id="fokus-target-input" class="target-input" placeholder="Contoh: Baca buku dongeng Bab 2, Kerjakan 5 soal Matematika..." maxlength="100">
+              <button class="target-preset-btn" id="btn-quick-target-1">📖 Membaca</button>
+              <button class="target-preset-btn" id="btn-quick-target-2">✏️ Menulis PR</button>
+              <button class="target-preset-btn" id="btn-quick-target-3">🎨 Menggambar</button>
+            </div>
+          </div>
+
+          <!-- Pemilih Durasi Preset (15 menit & 25 menit) -->
+          <div class="duration-selector">
+            <span class="duration-label">Pilih Durasi Belajar:</span>
+            <div class="duration-buttons">
+              <button class="duration-btn active" data-minutes="15" id="btn-dur-15">
+                <span class="dur-badge">Ramah Pemula</span>
+                <span class="dur-time">15 Menit</span>
+                <span class="dur-sub">Cocok untuk tugas ringan</span>
+              </button>
+              <button class="duration-btn" data-minutes="25" id="btn-dur-25">
+                <span class="dur-badge">Juara Fokus</span>
+                <span class="dur-time">25 Menit</span>
+                <span class="dur-sub">Teknik Pomodoro Hebat</span>
+              </button>
+              <button class="duration-btn" data-minutes="5" id="btn-dur-5">
+                <span class="dur-badge">Coba Cepat</span>
+                <span class="dur-time">5 Menit</span>
+                <span class="dur-sub">Latihan singkat</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Timer Visual & Lingkaran Progres -->
+          <div class="timer-display-card">
+            <div class="timer-circle-wrap">
+              <svg class="timer-svg" viewBox="0 0 240 240">
+                <!-- Lingkaran latar belakang -->
+                <circle class="timer-track" cx="120" cy="120" r="100" />
+                <!-- Lingkaran progres yang berkurang -->
+                <circle class="timer-progress" id="timer-progress-ring" cx="120" cy="120" r="100" />
+              </svg>
+              <div class="timer-inner-content">
+                <div class="timer-plant-icon" id="timer-plant-mascot">🌱</div>
+                <div class="timer-time-digits" id="timer-digits">15:00</div>
+                <div class="timer-status-text" id="timer-status-text">Siap untuk mulai?</div>
+              </div>
+            </div>
+
+            <!-- Pesan Pendukung / Motivasi Dinamis -->
+            <div class="timer-encouragement" id="timer-encouragement-text">
+              ✨ Klik "Mulai Belajar" dan biarkan pikiranmu fokus sepenuhnya!
+            </div>
+
+            <!-- Tombol Kontrol: Mulai, Jeda, Lanjutkan, Ulangi -->
+            <div class="timer-controls">
+              <button class="control-btn btn-start" id="btn-timer-start">
+                <span class="ctrl-icon">▶️</span>
+                <span class="ctrl-text">Mulai Belajar</span>
+              </button>
+              <button class="control-btn btn-pause hidden" id="btn-timer-pause">
+                <span class="ctrl-icon">⏸️</span>
+                <span class="ctrl-text">Jeda Sebentar</span>
+              </button>
+              <button class="control-btn btn-resume hidden" id="btn-timer-resume">
+                <span class="ctrl-icon">⏯️</span>
+                <span class="ctrl-text">Lanjutkan</span>
+              </button>
+              <button class="control-btn btn-reset" id="btn-timer-reset">
+                <span class="ctrl-icon">🔄</span>
+                <span class="ctrl-text">Ulangi</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kartu Pemilih Musik Pengiring Belajar & Fokus -->
+          <div class="focus-music-card">
+            <div class="focus-music-header">
+              <div class="f-music-title">
+                <span class="f-music-icon">🎵</span>
+                <div>
+                  <strong>Pilih Musik Pengiring Belajar</strong>
+                  <span>Bantu pikiranmu lebih tenang dan fokus tanpa terdistraksi</span>
+                </div>
+              </div>
+              <label class="auto-music-toggle" title="Putar otomatis saat sesi dimulai">
+                <input type="checkbox" id="check-auto-music" checked>
+                <span class="toggle-switch"></span>
+                <span class="toggle-label">Otomatis saat Mulai</span>
+              </label>
+            </div>
+
+            <!-- Pilihan Lagu & Suara Alam -->
+            <div class="music-tracks-grid" id="music-tracks-selector">
+              <button class="track-btn active" data-track="kotak_musik">
+                <span class="track-icon">🎶</span>
+                <span class="track-title">Kotak Musik Ajaib</span>
+                <span class="track-type">Melodi Kalimba Ceria</span>
+              </button>
+              <button class="track-btn" data-track="hujan">
+                <span class="track-icon">🌧️</span>
+                <span class="track-title">Hujan di Daun</span>
+                <span class="track-type">Suara Air Menenangkan</span>
+              </button>
+              <button class="track-btn" data-track="burung">
+                <span class="track-icon">🐦</span>
+                <span class="track-title">Kicau Burung Rimba</span>
+                <span class="track-type">Hutan Sage Alami</span>
+              </button>
+              <button class="track-btn" data-track="sungai">
+                <span class="track-icon">🌊</span>
+                <span class="track-title">Sungai Damai</span>
+                <span class="track-type">Gemercik Air Sejuk</span>
+              </button>
+              <button class="track-btn" data-track="zen">
+                <span class="track-icon">🌙</span>
+                <span class="track-title">Dengungan 432Hz</span>
+                <span class="track-type">Relaksasi Mendalam</span>
+              </button>
+              <button class="track-btn" data-track="hening">
+                <span class="track-icon">🔇</span>
+                <span class="track-title">Ruang Hening</span>
+                <span class="track-type">Tanpa Suara</span>
+              </button>
+            </div>
+
+            <!-- Kontrol Cepat Musik di Halaman Fokus -->
+            <div class="focus-music-quick-bar">
+              <button class="focus-music-play-btn" id="btn-focus-play-music">
+                <span id="focus-music-icon-state">▶️</span>
+                <span id="focus-music-text-state">Putar Musik Sekarang</span>
+              </button>
+              <div class="focus-volume-control">
+                <span>Volume:</span>
+                <input type="range" id="focus-music-volume" min="0" max="100" value="60" class="volume-slider">
+              </div>
+            </div>
+          </div>
+
+          <!-- Info Box Sesi -->
+          <div class="timer-rules-card">
+            <div class="rule-item">
+              <span class="rule-icon">💡</span>
+              <span class="rule-text"><strong>Aturan Permainan:</strong> Sesi hanya akan tercatat selesai dan menambah level tanaman ketika waktu tepat menyentuh angka <strong>00:00</strong>. Tetap semangat ya!</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           4. HALAMAN KEBUN PERTUMBUHAN
+           ========================================================= -->
+      <section class="page-view" id="page-kebun">
+        <div class="page-header">
+          <div class="header-icon-pill">🪴 Kebun & Koleksi Tanaman</div>
+          <h2 class="page-title">Kebun Pertumbuhanmu</h2>
+          <p class="page-desc">Setiap sesi fokus yang kamu selesaikan memberikan sinar matahari dan tetesan air ajaib untuk tanamanmu!</p>
+        </div>
+
+        <!-- Kartu Showcase Tanaman Utama -->
+        <div class="garden-main-card">
+          <div class="garden-stage-display">
+            <!-- Lingkungan Kebun SVG dengan tanaman hidup -->
+            <div class="garden-scenery">
+              <div class="sun-glow">☀️</div>
+              <div class="cloud-1">☁️</div>
+              <div class="cloud-2">☁️</div>
+              <div class="butterflies">🦋</div>
+              <div class="garden-plant-container" id="garden-dynamic-svg">
+                <!-- Tanaman SVG Dinamis -->
+              </div>
+              <div class="ground-grass"></div>
+            </div>
+          </div>
+
+          <div class="garden-info-panel">
+            <div class="garden-level-tag" id="garden-current-level-tag">Level 1: Benih Nyenyak</div>
+            <h3 class="garden-plant-name" id="garden-current-plant-title">Benih Pertama</h3>
+            <p class="garden-plant-story" id="garden-current-plant-story">
+              Benih ini terkubur hangat di dalam tanah sage yang subur. Dia sedang menanti siraman fokus darimu agar bisa membuka matanya dan bertunas!
+            </p>
+
+            <div class="water-progress-box">
+              <div class="water-progress-header">
+                <span>💧 Tetesan Air Terkumpul</span>
+                <strong id="garden-water-count">0 / 2 Sesi</strong>
+              </div>
+              <div class="water-progress-bar">
+                <div class="water-progress-fill" id="garden-water-bar-fill" style="width: 0%;"></div>
+              </div>
+              <span class="water-progress-hint" id="garden-water-hint">Selesaikan 2 sesi fokus untuk berevolusi ke tahap berikutnya!</span>
+            </div>
+
+            <!-- Tombol Interaksi Ceria -->
+            <div class="garden-interactions">
+              <button class="garden-water-btn" id="btn-water-plant">
+                <span>💧 Siram Tanaman</span>
+              </button>
+              <button class="garden-motivate-btn" id="btn-plant-cheer">
+                <span>💬 Ajak Bicara</span>
+              </button>
+            </div>
+            <div class="plant-speech-bubble hidden" id="plant-speech-bubble">
+              "Terima kasih sudah belajar bersamaku! Aku makin segar!" 🌿
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 Tahapan Evolusi Tanaman -->
+        <div class="growth-evolution-section">
+          <h3 class="section-subheading">Tahapan Evolusi Tanaman</h3>
+          <div class="evolution-grid">
+            <!-- Tahap 1: Benih -->
+            <div class="evolution-card active" id="evo-card-1">
+              <div class="evo-status-badge">Tahap 1</div>
+              <div class="evo-icon">🌰</div>
+              <h4 class="evo-name">Benih Tidur</h4>
+              <span class="evo-req">0 - 1 Sesi Selesai</span>
+              <p class="evo-desc">Benih mungil yang bersiap memulai petualangan belajarnya.</p>
+            </div>
+
+            <!-- Tahap 2: Tunas -->
+            <div class="evolution-card" id="evo-card-2">
+              <div class="evo-status-badge">Tahap 2</div>
+              <div class="evo-icon">🌱</div>
+              <h4 class="evo-name">Tunas Hijau</h4>
+              <span class="evo-req">2 - 4 Sesi Selesai</span>
+              <p class="evo-desc">Dua helai daun kecil mulai menyembul ke permukaan tanah.</p>
+            </div>
+
+            <!-- Tahap 3: Tanaman Muda -->
+            <div class="evolution-card" id="evo-card-3">
+              <div class="evo-status-badge">Tahap 3</div>
+              <div class="evo-icon">🌿</div>
+              <h4 class="evo-name">Tanaman Muda</h4>
+              <span class="evo-req">5 - 8 Sesi Selesai</span>
+              <p class="evo-desc">Batang semakin kokoh dengan dedaunan sage yang lebat.</p>
+            </div>
+
+            <!-- Tahap 4: Tanaman Berbunga -->
+            <div class="evolution-card" id="evo-card-4">
+              <div class="evo-status-badge">Tahap 4</div>
+              <div class="evo-icon">🌸</div>
+              <h4 class="evo-name">Pohon Berbunga</h4>
+              <span class="evo-req">9 - 14 Sesi Selesai</span>
+              <p class="evo-desc">Bunga-bunga harum bermekaran menandakan kebiasaan fokus yang kuat.</p>
+            </div>
+
+            <!-- Tahap 5: Pohon Dewasa Berbuah -->
+            <div class="evolution-card" id="evo-card-5">
+              <div class="evo-status-badge">Tahap 5</div>
+              <div class="evo-icon">🌳</div>
+              <h4 class="evo-name">Pohon Dewasa Berbuah</h4>
+              <span class="evo-req">15+ Sesi Selesai</span>
+              <p class="evo-desc">Pohon rindang yang kokoh, berbuah manis penuh kebijaksanaan!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lencana Prestasi Belajar (Badges) -->
+        <div class="badges-section">
+          <h3 class="section-subheading">Lencana & Piala Belajarmu 🏆</h3>
+          <div class="badges-grid" id="badges-container">
+            <!-- Diisi secara dinamis dengan script -->
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           5. HALAMAN REFLEKSI
+           ========================================================= -->
+      <section class="page-view" id="page-refleksi">
+        <div class="page-header">
+          <div class="header-icon-pill">📝 Jurnal Sahabat Belajar</div>
+          <h2 class="page-title">Refleksi Belajar Hari Ini</h2>
+          <p class="page-desc">Setelah belajar, luangkan 1 menit untuk merenung. Mengetahui apa yang kamu rasakan membantumu jadi pembelajar yang hebat!</p>
+        </div>
+
+        <div class="reflection-layout">
+          <!-- Formulir Refleksi -->
+          <div class="reflection-form-card">
+            <form id="reflection-form" novalidate>
+              <!-- 1. Target yang Dipelajari -->
+              <div class="form-group">
+                <label for="refl-target" class="form-label">
+                  <span class="form-num">1</span>
+                  <span>Materi atau target apa yang baru saja kamu pelajari?</span>
+                  <span class="required-star">*</span>
+                </label>
+                <input type="text" id="refl-target" class="form-input" placeholder="Misal: Membaca IPA tentang tumbuhan, Belajar perkalian..." required>
+                <span class="form-error-msg" id="refl-target-error">Tuliskan target belajarmu ya!</span>
+              </div>
+
+              <!-- 2. Perasaan Saat Belajar (Mood Picker) -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span class="form-num">2</span>
+                  <span>Bagaimana perasaanmu saat belajar tadi?</span>
+                  <span class="required-star">*</span>
+                </label>
+                <div class="mood-picker" id="mood-picker">
+                  <button type="button" class="mood-btn" data-mood="senang">
+                    <span class="mood-emoji">😃</span>
+                    <span class="mood-name">Senang & Berenergi</span>
+                  </button>
+                  <button type="button" class="mood-btn" data-mood="tenang">
+                    <span class="mood-emoji">😊</span>
+                    <span class="mood-name">Tenang & Damai</span>
+                  </button>
+                  <button type="button" class="mood-btn" data-mood="biasa">
+                    <span class="mood-emoji">😐</span>
+                    <span class="mood-name">Biasa Saja</span>
+                  </button>
+                  <button type="button" class="mood-btn" data-mood="lelah">
+                    <span class="mood-emoji">🥱</span>
+                    <span class="mood-name">Agak Bosan / Mengantuk</span>
+                  </button>
+                  <button type="button" class="mood-btn" data-mood="sulit">
+                    <span class="mood-emoji">🤯</span>
+                    <span class="mood-name">Materinya Sulit</span>
+                  </button>
+                </div>
+                <input type="hidden" id="refl-mood" required>
+                <span class="form-error-msg" id="refl-mood-error">Pilih salah satu ekspresi perasaanmu ya!</span>
+              </div>
+
+              <!-- 3. Gangguan Fokus (Distractions Tags Multi-select) -->
+              <div class="form-group">
+                <label class="form-label">
+                  <span class="form-num">3</span>
+                  <span>Apakah ada hal yang mengganggu fokusmu tadi?</span>
+                  <span class="optional-tag">(Boleh pilih lebih dari 1)</span>
+                </label>
+                <div class="distraction-tags" id="distraction-tags">
+                  <button type="button" class="tag-btn" data-distraction="Tidak Ada (Fokus Penuh!)">✨ Tidak Ada (Fokus Penuh!)</button>
+                  <button type="button" class="tag-btn" data-distraction="HP / Game / Notifikasi">📱 HP / Game / Notifikasi</button>
+                  <button type="button" class="tag-btn" data-distraction="Suara Bising Sekitar">🔊 Suara Bising / TV</button>
+                  <button type="button" class="tag-btn" data-distraction="Melamun / Mengkhayal">💭 Pikiran Melamun</button>
+                  <button type="button" class="tag-btn" data-distraction="Teman / Saudara Mengajak Main">👯 Teman / Saudara</button>
+                  <button type="button" class="tag-btn" data-distraction="Lapar / Haus">🍎 Lapar / Haus</button>
+                  <button type="button" class="tag-btn" data-distraction="Mengantuk / Capek">😴 Mengantuk / Capek</button>
+                </div>
+              </div>
+
+              <!-- 4. Hal yang Berhasil Dipelajari -->
+              <div class="form-group">
+                <label for="refl-insight" class="form-label">
+                  <span class="form-num">4</span>
+                  <span>Apa hal baru atau seru yang berhasil kamu pelajari?</span>
+                </label>
+                <textarea id="refl-insight" class="form-textarea" rows="2" placeholder="Contoh: Aku jadi tahu rumus luas segitiga, atau aku berhasil membaca 5 lembar tanpa berhenti!"></textarea>
+              </div>
+
+              <!-- 5. Strategi di Sesi Berikutnya -->
+              <div class="form-group">
+                <label for="refl-strategy" class="form-label">
+                  <span class="form-num">5</span>
+                  <span>Strategi atau ide seru untuk sesi berikutnya:</span>
+                  <span class="required-star">*</span>
+                </label>
+                <textarea id="refl-strategy" class="form-textarea" rows="2" placeholder="Contoh: Matikan HP dulu, siapkan minum, atau belajar di ruangan yang lebih tenang." required></textarea>
+                <span class="form-error-msg" id="refl-strategy-error">Tuliskan strategi seru untuk sesi berikutnya ya!</span>
+              </div>
+
+              <!-- Tombol Simpan -->
+              <div class="form-actions">
+                <button type="submit" class="submit-btn" id="btn-save-reflection">
+                  <span>💾 Simpan Refleksi ke Evaluasi</span>
+                </button>
+                <button type="reset" class="reset-btn" id="btn-reset-form">
+                  <span>Bersihkan Formulir</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Kartu Samping: Manfaat Refleksi -->
+          <div class="reflection-side-cards">
+            <div class="side-card">
+              <div class="side-card-icon">🧠</div>
+              <h4>Kenapa Refleksi Itu Penting?</h4>
+              <p>Menuliskan apa yang kamu rasakan melatih otakmu agar mengerti kapan kamu butuh istirahat dan bagaimana caramu bisa belajar lebih cerdas, bukan lebih capek!</p>
+            </div>
+
+            <div class="side-card bg-cream">
+              <div class="side-card-icon">🌱</div>
+              <h4>Tips Mengatasi Distraksi</h4>
+              <p>Jika sering terganggu HP atau game, letakkan HP di ruangan lain atau titipkan ke orang tua saat timer TUMBUH berjalan.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           6. HALAMAN JEDA AKTIF
+           ========================================================= -->
+      <section class="page-view" id="page-jeda">
+        <div class="page-header">
+          <div class="header-icon-pill">🧘‍♂️ Istirahat Sehat</div>
+          <h2 class="page-title">Jeda Aktif & Segarkan Diri</h2>
+          <p class="page-desc">Setelah fokus belajar, tubuh dan matamu butuh istirahat. Pilih aktivitas di bawah ini untuk menyegarkan energimu kembali!</p>
+        </div>
+
+        <!-- Tab Pemilih Kategori Jeda: Napas, Mata, Peregangan -->
+        <div class="jeda-tab-nav">
+          <button class="jeda-tab-btn active" data-tab="napas">
+            <span>🌬️ Latihan Napas Bahagia</span>
+          </button>
+          <button class="jeda-tab-btn" data-tab="mata">
+            <span>👀 Istirahat Mata (20-20-20)</span>
+          </button>
+          <button class="jeda-tab-btn" data-tab="stretching">
+            <span>🦒 Peregangan Hewan Ceria</span>
+          </button>
+        </div>
+
+        <!-- 1. KONTEN TAB: LATIHAN NAPAS & PERHATIAN (Guided Breathing) -->
+        <div class="jeda-tab-content active" id="tab-napas">
+          <div class="breathing-card">
+            <div class="breathing-header">
+              <h3>Bunga Bernapas: Tarik Napas Tenang</h3>
+              <p>Ikuti lingkaran bunga yang mengembang dan mengempis untuk merilekskan pikiranmu.</p>
+            </div>
+
+            <!-- Visual Animasi Lingkaran Bernapas -->
+            <div class="breathing-visual-wrap">
+              <div class="breathing-circle-outer">
+                <div class="breathing-circle-inner" id="breathing-circle">
+                  <span class="breathing-mascot">🌸</span>
+                  <span class="breathing-instruction" id="breathing-text">Siap Bernapas?</span>
+                  <span class="breathing-seconds" id="breathing-seconds">4s</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="breathing-controls">
+              <button class="breathing-btn" id="btn-toggle-breathing">
+                <span>▶️ Mulai Latihan Napas (1 Menit)</span>
+              </button>
+              <button class="breathing-btn-secondary" id="btn-reset-breathing">
+                <span>🔄 Ulangi</span>
+              </button>
+            </div>
+
+            <div class="breathing-tips-row">
+              <div class="b-tip"><span>1. Tarik Napas (4 detik)</span> lewat hidung</div>
+              <div class="b-tip"><span>2. Tahan Sebentar (2 detik)</span> rasakan ketenangan</div>
+              <div class="b-tip"><span>3. Hembuskan (4 detik)</span> lewat mulut perlahan</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. KONTEN TAB: SENAM & ISTIRAHAT MATA -->
+        <div class="jeda-tab-content" id="tab-mata">
+          <div class="eye-rest-card">
+            <div class="eye-header">
+              <h3>Jurusan Mata Elang: Aturan 20-20-20 🦅</h3>
+              <p>Melihat layar atau buku terus-menerus bisa bikin mata lelah. Yuk lakukan gerakan ini!</p>
+            </div>
+
+            <div class="eye-steps-grid">
+              <div class="eye-step-item">
+                <div class="eye-badge">Latihan 1</div>
+                <div class="eye-icon">🌳</div>
+                <h4>Lihat Benda Jauh</h4>
+                <p>Arahkan pandanganmu ke luar jendela atau benda yang jaraknya sekitar 6 meter (20 kaki) selama 20 detik.</p>
+              </div>
+
+              <div class="eye-step-item">
+                <div class="eye-badge">Latihan 2</div>
+                <div class="eye-icon">✨</div>
+                <h4>Kedip Bintang</h4>
+                <p>Kedipkan matamu perlahan sebanyak 10 kali untuk membasahi mata dan mencegah mata perih.</p>
+              </div>
+
+              <div class="eye-step-item">
+                <div class="eye-badge">Latihan 3</div>
+                <div class="eye-icon">🔄</div>
+                <h4>Putar Bola Mata</h4>
+                <p>Putar matamu ke atas, kanan, bawah, lalu kiri dengan lembut tanpa menggerakkan kepalamu.</p>
+              </div>
+
+              <div class="eye-step-item">
+                <div class="eye-badge">Latihan 4</div>
+                <div class="eye-icon">🤲</div>
+                <h4>Hangatkan dengan Telapak</h4>
+                <p>Gosok kedua telapak tanganmu hingga hangat, lalu tempelkan perlahan di atas mata yang terpejam. Nikmati rasa hangatnya!</p>
+              </div>
+            </div>
+
+            <!-- Mini Timer Istirahat Mata 20 Detik -->
+            <div class="mini-timer-box">
+              <div class="mini-timer-title">Coba Istirahat Mata 20 Detik Sekarang:</div>
+              <div class="mini-timer-display" id="eye-timer-display">20 Detik</div>
+              <button class="mini-timer-btn" id="btn-start-eye-timer">▶️ Mulai 20 Detik</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. KONTEN TAB: PEREGANGAN HEWAN CERIA -->
+        <div class="jeda-tab-content" id="tab-stretching">
+          <div class="stretching-card">
+            <div class="stretch-header">
+              <h3>Peregangan Hewan Sahabat Rimba 🦒</h3>
+              <p>Berdiri dari kursimu, regangkan otot-otot tubuhmu dengan gaya hewan lucu!</p>
+            </div>
+
+            <div class="stretch-grid">
+              <div class="stretch-card">
+                <div class="stretch-badge">30 Detik</div>
+                <div class="stretch-emoji">🦒</div>
+                <h4>Peregangan Jerapah</h4>
+                <p>Berdiri tegak, angkat kedua tangan lurus ke atas setinggi mungkin seolah meraih daun tertinggi. Berjinjitlah perlahan!</p>
+              </div>
+
+              <div class="stretch-card">
+                <div class="stretch-badge">30 Detik</div>
+                <div class="stretch-emoji">🦅</div>
+                <h4>Bahu Elang Perkasa</h4>
+                <p>Putar kedua bahumu ke belakang 10 kali, lalu ke depan 10 kali. Rasakan leher dan punggungmu jadi lega.</p>
+              </div>
+
+              <div class="stretch-card">
+                <div class="stretch-badge">30 Detik</div>
+                <div class="stretch-emoji">🐱</div>
+                <h4>Kucing Menggeliat</h4>
+                <p>Letakkan tangan di atas meja, tundukkan kepala dan lengkungkan punggung ke atas, lalu dorong dada ke depan.</p>
+              </div>
+
+              <div class="stretch-card">
+                <div class="stretch-badge">30 Detik</div>
+                <div class="stretch-emoji">🐧</div>
+                <h4>Goyangan Pinguin Ceria</h4>
+                <p>Letakkan tangan di pinggul, goyangkan badan ke kiri dan kanan dengan riang sambil tersenyum lebar!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           7. HALAMAN EVALUASI PERKEMBANGAN
+           ========================================================= -->
+      <section class="page-view" id="page-evaluasi">
+        <div class="page-header">
+          <div class="header-icon-pill">📊 Catatan & Evaluasi</div>
+          <h2 class="page-title">Evaluasi Perkembangan Belajar</h2>
+          <p class="page-desc">Lihat riwayat belajarmu, ketahui apa yang paling sering mengganggu, dan rayakan kemajuanmu!</p>
+        </div>
+
+        <!-- Ringkasan Statistik Utama -->
+        <div class="eval-summary-grid">
+          <div class="eval-stat-box">
+            <div class="eval-stat-icon">🎯</div>
+            <div class="eval-stat-data">
+              <span class="eval-stat-val" id="eval-total-sessions">0</span>
+              <span class="eval-stat-name">Total Sesi Selesai</span>
+            </div>
+          </div>
+
+          <div class="eval-stat-box">
+            <div class="eval-stat-icon">⌛</div>
+            <div class="eval-stat-data">
+              <span class="eval-stat-val" id="eval-total-minutes">0 m</span>
+              <span class="eval-stat-name">Total Waktu Belajar</span>
+            </div>
+          </div>
+
+          <div class="eval-stat-box">
+            <div class="eval-stat-icon">🪴</div>
+            <div class="eval-stat-data">
+              <span class="eval-stat-val" id="eval-plant-stage">Benih</span>
+              <span class="eval-stat-name">Tingkat Tanaman</span>
+            </div>
+          </div>
+
+          <div class="eval-stat-box">
+            <div class="eval-stat-icon">📝</div>
+            <div class="eval-stat-data">
+              <span class="eval-stat-val" id="eval-total-reflections">0</span>
+              <span class="eval-stat-name">Catatan Refleksi</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analisis Distraksi & Mood Belajar -->
+        <div class="eval-analysis-grid">
+          <!-- Kartu Ringkasan Distraksi -->
+          <div class="analysis-card">
+            <div class="analysis-header">
+              <h3>🔍 Ringkasan Gangguan Fokus Terbanyak</h3>
+              <p>Melihat apa yang sering mengganggu membantumu mencari solusi cerdas.</p>
+            </div>
+            <div class="distraction-bars" id="distraction-summary-container">
+              <!-- Diisi otomatis oleh JS -->
+              <p class="empty-state-text">Belum ada data refleksi. Isi refleksi setelah belajar ya!</p>
+            </div>
+          </div>
+
+          <!-- Kartu Mood & Semangat Belajar -->
+          <div class="analysis-card">
+            <div class="analysis-header">
+              <h3>🌈 Persebaran Perasaan Saat Belajar</h3>
+              <p>Semakin banyak rasa senang, semakin mudah otak menyerap ilmu!</p>
+            </div>
+            <div class="mood-summary-container" id="mood-summary-container">
+              <!-- Diisi otomatis oleh JS -->
+              <p class="empty-state-text">Belum ada data perasaan yang tersimpan.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Riwayat Refleksi Belajar -->
+        <div class="history-section">
+          <div class="history-header">
+            <div>
+              <h3 class="section-subheading">Riwayat Jurnal Refleksi</h3>
+              <p class="history-sub">Semua catatan dan ide belajarmu tersimpan rapi di sini.</p>
+            </div>
+            <div class="history-actions">
+              <button class="export-btn" id="btn-print-eval" title="Cetak atau Simpan PDF">
+                <span>🖨️ Cetak / Simpan</span>
+              </button>
+              <button class="clear-data-btn" id="btn-clear-data" title="Hapus Riwayat">
+                <span>🗑️ Reset Data</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Daftar Kartu Refleksi -->
+          <div class="reflections-list" id="reflections-history-list">
+            <!-- Diisi secara dinamis oleh JS -->
+            <div class="empty-history-box">
+              <span class="empty-icon">🌱</span>
+              <h4>Belum Ada Catatan Refleksi</h4>
+              <p>Selesaikan sesi fokus di menu Fokus, lalu simpan refleksimu di menu Refleksi. Catatanmu akan muncul di sini!</p>
+              <button class="empty-cta-btn" data-goto="fokus">Mulai Belajar Sekarang ⏱️</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==============================================
+         NAVIGASI BAWAH (Tampil khusus Layar HP / Mobile)
+         ============================================== -->
+    <nav class="mobile-bottom-nav" id="mobile-nav">
+      <button class="mobile-nav-btn active" data-page="beranda">
+        <span class="m-nav-icon">🏡</span>
+        <span class="m-nav-label">Beranda</span>
+      </button>
+      <button class="mobile-nav-btn" data-page="panduan">
+        <span class="m-nav-icon">📖</span>
+        <span class="m-nav-label">Panduan</span>
+      </button>
+      <button class="mobile-nav-btn" data-page="fokus">
+        <span class="m-nav-icon">⏱️</span>
+        <span class="m-nav-label">Fokus</span>
+      </button>
+      <button class="mobile-nav-btn" data-page="kebun">
+        <span class="m-nav-icon">🪴</span>
+        <span class="m-nav-label">Kebun</span>
+      </button>
+      <button class="mobile-nav-btn" data-page="refleksi">
+        <span class="m-nav-icon">📝</span>
+        <span class="m-nav-label">Refleksi</span>
+      </button>
+      <button class="mobile-nav-btn" data-page="jeda">
+        <span class="m-nav-icon">🧘‍♂️</span>
+        <span class="m-nav-label">Jeda</span>
+      </button>
+      <button class="mobile-nav-btn" data-page="evaluasi">
+        <span class="m-nav-icon">📊</span>
+        <span class="m-nav-label">Evaluasi</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ==============================================
+       MODAL PERAYAAN: SESI SELESAI 🎉
+       ============================================== -->
+  <div class="modal-overlay hidden" id="modal-celebration">
+    <div class="modal-card">
+      <div class="modal-confetti-header">
+        <span class="modal-big-icon">🎉</span>
+        <h3 class="modal-title">HEBAT SEKALI!</h3>
+        <p class="modal-sub">Kamu berhasil menyelesaikan satu sesi fokus belajar!</p>
+      </div>
+      <div class="modal-body-content">
+        <div class="modal-reward-box">
+          <div class="modal-reward-icon">🪴</div>
+          <div class="modal-reward-text">
+            <strong>Tanamanmu Mendapat Air Segar!</strong>
+            <p id="modal-reward-details">+1 Tetesan Air dan Nutrisi Kebun telah ditambahkan.</p>
+          </div>
+        </div>
+        <p class="modal-prompt-text">Yuk istirahatkan matamu atau tuliskan refleksimu selagi ingatanmu masih segar!</p>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-primary-btn" id="btn-modal-to-refleksi">
+          <span>📝 Tulis Refleksi Belajar</span>
+        </button>
+        <button class="modal-secondary-btn" id="btn-modal-to-kebun">
+          <span>🪴 Lihat Kebunku</span>
+        </button>
+        <button class="modal-text-btn" id="btn-modal-close">Tutup</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================
+       MODAL UBAH PROFIL ANAK
+       ============================================== -->
+  <div class="modal-overlay hidden" id="modal-profile">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Siapa Nama Sahabat Belajarmu? 🌱</h3>
+        <p class="modal-sub">Pilih nama panggilan dan avatar kesukaanmu!</p>
+      </div>
+      <div class="modal-body-content">
+        <div class="form-group">
+          <label for="input-child-name" class="form-label">Nama Panggilan:</label>
+          <input type="text" id="input-child-name" class="form-input" placeholder="Misal: Budi, Aisyah, Tiara..." maxlength="20">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pilih Avatar:</label>
+          <div class="avatar-selection-grid" id="avatar-grid">
+            <button type="button" class="avatar-select-btn active" data-avatar="🌱">🌱</button>
+            <button type="button" class="avatar-select-btn" data-avatar="🌻">🌻</button>
+            <button type="button" class="avatar-select-btn" data-avatar="🍓">🍓</button>
+            <button type="button" class="avatar-select-btn" data-avatar="🦉">🦉</button>
+            <button type="button" class="avatar-select-btn" data-avatar="🦁">🦁</button>
+            <button type="button" class="avatar-select-btn" data-avatar="🚀">🚀</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="modal-primary-btn" id="btn-save-profile">Simpan Profil</button>
+        <button class="modal-text-btn" id="btn-close-profile">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Alert -->
+  <div class="toast-notification" id="toast-notification">
+    <span class="toast-icon" id="toast-icon">✨</span>
+    <span class="toast-message" id="toast-msg">Pesan notifikasi</span>
+  </div>
+
+  <!-- File JavaScript Utama -->
+  <script src="script.js"></script>
+</body>
+</html>
