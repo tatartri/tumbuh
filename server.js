@@ -108,6 +108,11 @@ app.use((err, req, res, next) => {
 // Dapatkan IP jaringan lokal (LAN) secara otomatis
 function getLanIP() {
   const interfaces = os.networkInterfaces();
+  // Prioritaskan Wi-Fi utama (en0 pada macOS)
+  if (interfaces['en0']) {
+    const en0Ipv4 = interfaces['en0'].find(i => i.family === 'IPv4' && !i.internal);
+    if (en0Ipv4) return en0Ipv4.address;
+  }
   for (const name of Object.keys(interfaces)) {
     for (const iface of interfaces[name]) {
       if (iface.family === 'IPv4' && !iface.internal) {

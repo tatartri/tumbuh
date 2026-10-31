@@ -284,8 +284,9 @@
 
   <script>
     // Deteksi URL secara otomatis dari browser
-    const host = window.location.host; // misal: 192.168.1.36:3000
-    const appUrl = `http://${host}/`;
+    const protocol = window.location.protocol;
+    const host = window.location.host;
+    const appUrl = `${protocol}//${host}/`;
 
     document.getElementById('app-url').textContent = appUrl;
     document.getElementById('open-link').href = appUrl;

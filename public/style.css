@@ -1152,10 +1152,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
 
 .stat-number {
   font-family: 'Fredoka', cursive, sans-serif;
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--text-dark);
-  line-height: 1.1;
+  line-height: 1.2;
 }
 
 .stat-label {
@@ -1167,14 +1167,15 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
 
 .stat-badge {
   position: absolute;
-  top: 10px;
-  right: 12px;
-  font-size: 0.68rem;
+  top: 8px;
+  right: 10px;
+  font-size: 0.65rem;
   font-weight: 700;
   padding: 2px 7px;
   border-radius: var(--radius-full);
   background-color: var(--bg-color);
   color: var(--primary-color);
+  white-space: nowrap;
 }
 
 /* Home Hero Grid */
@@ -1371,6 +1372,519 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
   color: var(--text-dark);
   font-style: italic;
   margin-top: 2px;
+}
+
+/* ==========================================================================
+   KOMPONEN TAMBAHAN HALAMAN BERANDA (REVISI PENGARAHAN DOSEN)
+   ========================================================================== */
+
+/* Section Container Utama di Beranda */
+.home-section-container {
+  margin-top: 36px;
+  margin-bottom: 36px;
+}
+
+.home-section-header {
+  margin-bottom: 22px;
+}
+
+.section-tag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  margin-bottom: 8px;
+  border: 1px solid rgba(71, 123, 98, 0.2);
+}
+
+.home-section-title {
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 1.55rem;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.home-section-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  max-width: 780px;
+}
+
+/* 1. KARTU PENGENALAN TUMBUH & MANFAAT */
+.home-intro-card {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F6FAF7 100%);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 28px 28px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-intro-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(220, 239, 224, 0.6) 0%, rgba(220, 239, 224, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.intro-lead-text {
+  font-size: 1.05rem;
+  color: var(--text-dark);
+  line-height: 1.65;
+  margin-bottom: 14px;
+}
+
+.intro-lead-text strong {
+  color: var(--primary-color);
+}
+
+.intro-goal-box {
+  background-color: rgba(220, 239, 224, 0.45);
+  border-left: 4px solid var(--primary-color);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 14px 18px;
+  margin-top: 14px;
+  margin-bottom: 22px;
+}
+
+.intro-goal-box strong {
+  color: var(--primary-color);
+  font-size: 0.94rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.intro-goal-box p {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* Grid Manfaat */
+.home-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.benefit-card {
+  background-color: #FFFFFF;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.benefit-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.benefit-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.benefit-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background-color: var(--secondary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.benefit-card-title {
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 1.05rem;
+  color: var(--primary-color);
+  line-height: 1.25;
+}
+
+.benefit-desc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 2. GRID 5 FITUR UTAMA */
+.home-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.home-feature-card {
+  background-color: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.home-feature-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.feature-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.feature-badge-pill {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+.feature-icon-bubble {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background-color: #F3F8EE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.7rem;
+  box-shadow: 0 2px 6px rgba(71, 123, 98, 0.08);
+}
+
+.feature-card-body {
+  margin-bottom: 18px;
+}
+
+.home-feature-title {
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.home-feature-desc {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.feature-card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 11px 16px;
+  border-radius: var(--radius-md);
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 0.94rem;
+  font-weight: 600;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.feature-card-btn .nav-arrow {
+  transition: transform 0.2s ease;
+  font-size: 1.05rem;
+}
+
+.feature-card-btn:hover .nav-arrow {
+  transform: translateX(4px);
+}
+
+/* Variasi Warna Pastel Ramah Anak untuk Tombol Fitur */
+.feature-card-btn.btn-fokus {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border-color: #C9E6CE;
+}
+.feature-card-btn.btn-fokus:hover {
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+}
+
+.feature-card-btn.btn-kebun {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+  border-color: #C8E6C9;
+}
+.feature-card-btn.btn-kebun:hover {
+  background-color: #2E7D32;
+  color: #FFFFFF;
+}
+
+.feature-card-btn.btn-refleksi {
+  background-color: var(--accent-peach);
+  color: #C05621;
+  border-color: #FBD38D;
+}
+.feature-card-btn.btn-refleksi:hover {
+  background-color: #DD6B20;
+  color: #FFFFFF;
+}
+
+.feature-card-btn.btn-jeda {
+  background-color: var(--accent-blue);
+  color: #2B6CB0;
+  border-color: #BEE3F8;
+}
+.feature-card-btn.btn-jeda:hover {
+  background-color: #3182CE;
+  color: #FFFFFF;
+}
+
+.feature-card-btn.btn-evaluasi {
+  background-color: #EDE9FE;
+  color: #6B46C1;
+  border-color: #DDD6FE;
+}
+.feature-card-btn.btn-evaluasi:hover {
+  background-color: #6B46C1;
+  color: #FFFFFF;
+}
+
+/* 3. ALUR LANGKAH PANDUAN PENGGUNAAN DI BERANDA */
+.home-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+  margin-bottom: 20px;
+}
+
+.home-step-item {
+  background-color: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 22px 18px;
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.home-step-item:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.step-num-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #C9E6CE;
+}
+
+.home-step-emoji {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+
+.home-step-title {
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.home-step-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Banner Menuju Menu Panduan */
+.home-guide-banner {
+  background: linear-gradient(135deg, #F0F9F3 0%, #E2F2E7 100%);
+  border: 1.5px dashed var(--primary-color);
+  border-radius: var(--radius-md);
+  padding: 16px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.home-guide-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-guide-banner-text strong {
+  font-size: 0.98rem;
+  color: var(--text-dark);
+  font-family: 'Fredoka', cursive, sans-serif;
+}
+
+.home-guide-banner-text span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.home-guide-banner-btn {
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition);
+  box-shadow: var(--shadow-button);
+}
+
+.home-guide-banner-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* 4. TIPS BELAJAR & FOKUS UNTUK ANAK */
+.home-tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.home-tip-card {
+  background-color: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 20px 18px;
+  display: flex;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.home-tip-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.home-tip-icon {
+  font-size: 1.9rem;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.home-tip-body {
+  flex-grow: 1;
+}
+
+.home-tip-title {
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+
+.home-tip-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Kutipan Sahabat Pohon yang Dipercantik */
+.kid-quote-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.quote-left-wrap {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.quote-cta-btn {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 12px 22px;
+  font-family: 'Fredoka', cursive, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: var(--shadow-button);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.quote-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(71, 123, 98, 0.35);
 }
 
 /* ==========================================================================
@@ -3674,6 +4188,47 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
   }
 
   .submit-btn, .reset-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Responsif Section Beranda Baru di Mobile */
+  .home-benefits-grid,
+  .home-features-grid,
+  .home-steps-grid,
+  .home-tips-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .home-intro-card {
+    padding: 20px 18px;
+  }
+
+  .home-guide-banner {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    padding: 16px 16px;
+  }
+
+  .home-guide-banner-btn {
+    width: 100%;
+  }
+
+  .kid-quote-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+    padding: 20px 16px;
+  }
+
+  .quote-left-wrap {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .quote-cta-btn {
     width: 100%;
     text-align: center;
   }

@@ -6,7 +6,9 @@
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "tunnel": "cloudflared tunnel --url http://127.0.0.1:3000",
+    "online": "node server.js & cloudflared tunnel --url http://127.0.0.1:3000"
   },
   "keywords": [
     "tumbuh",
